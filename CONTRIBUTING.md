@@ -33,8 +33,12 @@ Please note that this project is released with a [Code of Conduct](CODE_OF_CONDU
 
 4. **Set up pre-commit hooks** (optional but recommended)
    ```bash
-   pip install pre-commit
    pre-commit install
+   ```
+
+   To run the same checks on the full repository:
+   ```bash
+   pre-commit run --all-files
    ```
 
 ## Running Tests
@@ -72,12 +76,16 @@ pytest tests/ -v --cov=src --cov-report=html
 
 We use the following tools to maintain code quality:
 
+- **pre-commit** for fast local checks before commits
 - **Ruff** for linting and formatting
 - **mypy** for type checking
 
 ### Running Linters
 
 ```bash
+# Run all pre-commit hooks
+pre-commit run --all-files
+
 # Lint
 ruff check src/ tests/
 

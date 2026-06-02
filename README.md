@@ -251,6 +251,9 @@ Logs are stored as daily markdown files (`2026-05-29.md`) containing:
 # Install dev dependencies
 pip install -e ".[dev]"
 
+# Optional: install git hooks
+pre-commit install
+
 # Run tests
 pytest tests/ -v
 
