@@ -340,8 +340,8 @@ def register_connection_tools(mcp: "FastMCP", ctx: ToolContext) -> None:
         if format == "markdown":
             lines = ["# Database Health Check", ""]
 
-            status_emoji = "✅" if health.get("healthy") else "❌"
-            lines.append(f"**Status:** {status_emoji} {health.get('status', 'unknown').upper()}")
+            status_label = "OK" if health.get("healthy") else "FAIL"
+            lines.append(f"**Status:** {status_label} {health.get('status', 'unknown').upper()}")
             lines.append("")
 
             if health.get("healthy"):
