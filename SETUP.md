@@ -1,6 +1,6 @@
 # DBeast Setup Guide
 
-Complete guide for configuring DBeast with various IDEs and database connections.
+Complete guide for configuring DBeast with IDEs, MCP clients, and PostgreSQL connection scenarios.
 
 ---
 
@@ -10,14 +10,18 @@ Complete guide for configuring DBeast with various IDEs and database connections
 - [Connection Scenarios](#connection-scenarios)
 - [Configuration Reference](#configuration-reference)
 - [Troubleshooting](#troubleshooting)
+- [Runtime Connection](#runtime-connection)
 
 ---
 
 ## IDE Configuration
 
 All IDEs use similar JSON configuration. The main differences are:
+
 - **Config file location**
-- **JSON key names** (`mcpServers` vs `mcp.servers`)
+- **JSON key names** such as `mcpServers` or `mcp.servers`
+
+Use an absolute path to `src/server.py` unless the client supports workspace variables.
 
 ### Common Template
 
@@ -39,7 +43,7 @@ All IDEs use similar JSON configuration. The main differences are:
 
 | IDE | Config File | Servers Key |
 |-----|-------------|-------------|
-| **Cursor** | `.mcp.json` (project) or `~/.cursor/.mcp.json` (global) | `mcpServers` |
+| **Cursor** | `.mcp.json` project file or `~/.cursor/.mcp.json` global file | `mcpServers` |
 | **VS Code** | `.vscode/settings.json` or user `settings.json` | `mcp.servers` |
 | **Claude Desktop** | See paths below | `mcpServers` |
 | **Windsurf** | `.mcp.json` | `mcpServers` |
@@ -71,17 +75,20 @@ All IDEs use similar JSON configuration. The main differences are:
   }
 }
 ```
+
 </details>
 
 <details>
 <summary><b>VS Code (.vscode/settings.json)</b></summary>
+
+If VS Code opens the DBeast repository as the workspace root:
 
 ```json
 {
   "mcp.servers": {
     "dbeast": {
       "command": "python",
-      "args": ["${workspaceFolder}/dbeast/src/server.py"],
+      "args": ["${workspaceFolder}/src/server.py"],
       "env": {
         "DATABASE_URL": "postgresql://postgres:password@localhost:5432/mydb"
       }
@@ -89,6 +96,7 @@ All IDEs use similar JSON configuration. The main differences are:
   }
 }
 ```
+
 </details>
 
 <details>
@@ -107,6 +115,7 @@ All IDEs use similar JSON configuration. The main differences are:
   }
 }
 ```
+
 </details>
 
 ---
@@ -123,7 +132,8 @@ Choose your database type and copy the `env` block into your IDE config.
 }
 ```
 
-**Or with individual variables:**
+Or with individual variables:
+
 ```json
 "env": {
   "DB_HOST": "localhost",
@@ -134,9 +144,21 @@ Choose your database type and copy the `env` block into your IDE config.
 }
 ```
 
----
-
 ### Docker PostgreSQL
+
+Start the optional local PostgreSQL service:
+
+```bash
+docker compose up -d postgres
+```
+
+If you use the legacy Compose plugin:
+
+```bash
+docker-compose up -d postgres
+```
+
+Then configure DBeast:
 
 ```json
 "env": {
@@ -144,16 +166,14 @@ Choose your database type and copy the `env` block into your IDE config.
   "DB_PORT": "5432",
   "DB_USER": "postgres",
   "DB_PASSWORD": "postgres",
-  "DB_NAME": "mydb",
+  "DB_NAME": "testdb",
   "DBEAST_ENABLE_DOCKER_DISCOVERY": "true"
 }
 ```
 
 Use `connect(discover=true)` if you want DBeast to search for a local PostgreSQL container instead of using explicit connection variables.
 
----
-
-### AWS RDS (Direct)
+### AWS RDS Direct
 
 ```json
 "env": {
@@ -161,9 +181,7 @@ Use `connect(discover=true)` if you want DBeast to search for a local PostgreSQL
 }
 ```
 
----
-
-### AWS RDS (Secrets Manager)
+### AWS RDS Secrets Manager
 
 ```json
 "env": {
@@ -172,7 +190,8 @@ Use `connect(discover=true)` if you want DBeast to search for a local PostgreSQL
 }
 ```
 
-**Required secret JSON format:**
+Required secret JSON format:
+
 ```json
 {
   "host": "mydb.xxxxx.rds.amazonaws.com",
@@ -183,16 +202,16 @@ Use `connect(discover=true)` if you want DBeast to search for a local PostgreSQL
 }
 ```
 
----
+### AWS RDS SSH Tunnel
 
-### AWS RDS (SSH Tunnel)
+Step 1: Start SSH tunnel.
 
-**Step 1:** Start SSH tunnel
 ```bash
 ssh -L 5432:mydb.xxxxx.rds.amazonaws.com:5432 user@bastion-host -N
 ```
 
-**Step 2:** Configure env
+Step 2: Configure env.
+
 ```json
 "env": {
   "AWS_SECRET_NAME": "my-rds-credentials",
@@ -203,13 +222,11 @@ ssh -L 5432:mydb.xxxxx.rds.amazonaws.com:5432 user@bastion-host -N
 }
 ```
 
-> `DBEAST_SSL_VERIFY=false` required because SSL cert won't match `localhost`.
-
----
+`DBEAST_SSL_VERIFY=false` is required because the SSL certificate will not match `localhost`.
 
 ### Supabase
 
-Get connection string from Dashboard → Settings → Database:
+Get the connection string from Dashboard -> Settings -> Database:
 
 ```json
 "env": {
@@ -217,11 +234,9 @@ Get connection string from Dashboard → Settings → Database:
 }
 ```
 
----
-
 ### Neon
 
-Get connection string from Console → Connection Details:
+Get the connection string from Console -> Connection Details:
 
 ```json
 "env": {
@@ -229,11 +244,9 @@ Get connection string from Console → Connection Details:
 }
 ```
 
----
-
 ### Railway / Render / Fly.io
 
-Use connection string from provider dashboard:
+Use the connection string from the provider dashboard:
 
 ```json
 "env": {
@@ -266,8 +279,8 @@ Use connection string from provider dashboard:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `DB_SSLMODE` | prefer | PostgreSQL SSL mode (`disable`, `allow`, `prefer`, `require`, `verify-ca`, `verify-full`) |
-| `DBEAST_SSL_VERIFY` | true | Verify SSL certs (set `false` for SSH tunnels) |
+| `DB_SSLMODE` | prefer | PostgreSQL SSL mode: `disable`, `allow`, `prefer`, `require`, `verify-ca`, `verify-full` |
+| `DBEAST_SSL_VERIFY` | true | Verify SSL certificates. Set `false` for SSH tunnels. |
 
 ### Logging
 
@@ -282,16 +295,16 @@ Use connection string from provider dashboard:
 |----------|---------|-------------|
 | `DBEAST_AUDIT_ENABLED` | true | Enable MCP request/response logging |
 | `DBEAST_AUDIT_DIR` | logs/mcp_audit | Directory for audit log files |
-| `DBEAST_AUDIT_MAX_RESPONSE_SIZE` | 10000 | Max response chars in logs (truncates if larger) |
+| `DBEAST_AUDIT_MAX_RESPONSE_SIZE` | 10000 | Max response chars in logs, truncates if larger |
 
-Logs are stored as daily markdown files with tool calls, parameters (sensitive data masked), responses, and execution times.
+Logs are stored as daily markdown files with tool calls, parameters with sensitive data masked, responses, and execution times.
 
 ### Other
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `DBEAST_DEFAULT_ROW_LIMIT` | 100 | Default max rows returned |
-| `DBEAST_SCHEMA_CACHE_TTL` | 60s | Schema cache TTL (0 to disable) |
+| `DBEAST_SCHEMA_CACHE_TTL` | 60s | Schema cache TTL, set 0 to disable |
 | `DBEAST_ENABLE_DOCKER_DISCOVERY` | true | Auto-discover Docker PostgreSQL |
 
 ### Impact Analysis Thresholds
@@ -311,22 +324,22 @@ Logs are stored as daily markdown files with tool calls, parameters (sensitive d
 
 | Error | Solution |
 |-------|----------|
-| `connection refused` | Check host/port, ensure PostgreSQL is running |
+| `connection refused` | Check host/port and ensure PostgreSQL is running |
 | `authentication failed` | Verify username and password |
 | `database does not exist` | Check database name |
-| `SSL certificate verify failed` | Set `DBEAST_SSL_VERIFY=false` (SSH tunnels) |
+| `SSL certificate verify failed` | Set `DBEAST_SSL_VERIFY=false` for SSH tunnels |
 | `timeout expired` | Increase timeout values |
 
 ### SSH Tunnel
 
 ```bash
-# Start tunnel
 ssh -L 5432:rds-endpoint:5432 user@bastion -N
-
-# Test tunnel
 nc -zv localhost 5432
+```
 
-# Config must use:
+Config must use:
+
+```env
 DB_HOST=localhost
 DBEAST_SSL_VERIFY=false
 ```
@@ -334,42 +347,59 @@ DBEAST_SSL_VERIFY=false
 ### AWS Secrets Manager
 
 ```bash
-# Check AWS CLI configured
 aws sts get-caller-identity
-
-# Verify secret exists
 aws secretsmanager describe-secret --secret-id my-secret
+```
 
-# Required IAM permission: secretsmanager:GetSecretValue
+Required IAM permission:
+
+```text
+secretsmanager:GetSecretValue
 ```
 
 ### Docker Discovery
 
 ```bash
-# List containers
 docker ps
+```
 
-# Enable in config
+Enable in config:
+
+```env
 DBEAST_ENABLE_DOCKER_DISCOVERY=true
+```
 
-# Then use
+Then use:
+
+```text
 connect(discover=true)
 ```
 
 ### Server Not Starting
 
+Check Python:
+
 ```bash
-# Test Python path
-which python
 python --version
+```
 
-# Test server
-python /path/to/dbeast/src/server.py
+Test from the repository root:
 
-# Check imports
-cd /path/to/dbeast
+```bash
+python src/server.py
+```
+
+Check imports after installation:
+
+```bash
 pip install -e .
 python -c "from src.server import mcp"
+```
+
+On Windows, prefer forward slashes in MCP JSON paths:
+
+```json
+"args": ["C:/path/to/dbeast/src/server.py"]
 ```
 
 ---
@@ -378,7 +408,7 @@ python -c "from src.server import mcp"
 
 Connect without environment variables:
 
-```
+```text
 connect(url='postgresql://user:pass@host:5432/db')
 connect(host='localhost', user='postgres', password='secret', database='mydb')
 connect(aws_secret_name='my-secret', aws_region='us-west-2')
