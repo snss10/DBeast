@@ -1,0 +1,24 @@
+{
+  "name": "dbeast",
+  "displayName": "DBeast",
+  "description": "Expert PostgreSQL database analysis MCP server. 21 tools for schema discovery, query execution & optimization, health/maintenance/replication/security audits, data quality checks, partition analysis, audit logging, and safe write-operation impact previews.",
+  "version": "0.1.0",
+  "author": {
+    "name": "DBeast"
+  },
+  "license": "MIT",
+  "keywords": [
+    "postgresql",
+    "database",
+    "sql",
+    "mcp",
+    "dba",
+    "performance",
+    "security",
+    "partitions",
+    "vacuum",
+    "replication",
+    "data-quality"
+  ],
+  "mcp": "../.mcp.json"
+}

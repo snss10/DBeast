@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "dbeast": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["${workspaceFolder}/dbeast/src/server.py"],
+      "env": {
+        "DATABASE_URL": "",
+        "DB_HOST": "localhost",
+        "DB_PORT": "5432",
+        "DB_USER": "postgres",
+        "DB_PASSWORD": "",
+        "DB_NAME": "postgres",
+        "DB_SSLMODE": "prefer",
+        "AWS_SECRET_NAME": "",
+        "AWS_REGION": "us-west-1"
+      }
+    }
+  }
+}

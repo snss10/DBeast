@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  dbeast:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: dbeast-mcp
+    restart: unless-stopped
+    environment:
+      # Database connection (choose one method)
+      # Method 1: Full URL
+      # DATABASE_URL: postgresql://user:password@host:5432/database
+
+      # Method 2: Individual parameters
+      DB_HOST: ${DB_HOST:-localhost}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-}
+      DB_NAME: ${DB_NAME:-postgres}
+      DB_SSLMODE: ${DB_SSLMODE:-prefer}
+
+      # Method 3: AWS Secrets Manager
+      # AWS_SECRET_NAME: your-secret-name
+      # AWS_REGION: us-west-1
+
+      # Connection pool settings
+      DBEAST_POOL_MIN_SIZE: ${DBEAST_POOL_MIN_SIZE:-1}
+      DBEAST_POOL_MAX_SIZE: ${DBEAST_POOL_MAX_SIZE:-5}
+      DBEAST_COMMAND_TIMEOUT: ${DBEAST_COMMAND_TIMEOUT:-300}
+      DBEAST_POOL_CONNECTION_TIMEOUT: ${DBEAST_POOL_CONNECTION_TIMEOUT:-300}
+
+      # Logging (JSON for container log aggregation)
+      DBEAST_LOG_LEVEL: ${DBEAST_LOG_LEVEL:-INFO}
+      DBEAST_LOG_JSON: "true"
+
+      # Caching
+      DBEAST_SCHEMA_CACHE_TTL: ${DBEAST_SCHEMA_CACHE_TTL:-60}
+
+      # Audit logging
+      DBEAST_AUDIT_ENABLED: ${DBEAST_AUDIT_ENABLED:-true}
+      DBEAST_AUDIT_DIR: ${DBEAST_AUDIT_DIR:-/app/logs/mcp_audit}
+    volumes:
+      - audit-logs:/app/logs/mcp_audit
+    networks:
+      - dbeast-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "from core.logging import get_logger; print('OK')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Optional: Local PostgreSQL for testing
+  postgres:
+    image: postgres:15-alpine
+    container_name: dbeast-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: testdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - dbeast-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - dev
+
+volumes:
+  postgres-data:
+  audit-logs:
+
+networks:
+  dbeast-network:
+    driver: bridge
