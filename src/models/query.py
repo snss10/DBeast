@@ -8,6 +8,10 @@ from pydantic import BaseModel, Field
 class QueryResult(BaseModel):
     """Result of query execution with validated fields."""
 
+    success: bool = Field(
+        default=True,
+        description="Whether the query executed successfully",
+    )
     query: str = Field(
         min_length=1,
         max_length=100000,
