@@ -157,6 +157,8 @@ mypy src/ --ignore-missing-imports
    - `fix:` for bug fixes
    - `docs:` for documentation
    - `test:` for test changes
+   - `ci:` for CI/CD workflow changes
+   - `deps:` for dependency updates
    - `refactor:` for refactoring
 
 5. **Push and create a PR**
