@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 150" width="720" height="150" role="img" aria-labelledby="title desc">
+  <title id="title">DBeast Logo</title>
+  <desc id="desc">DBeast rendered as terminal-style ASCII art.</desc>
+  <rect width="720" height="150" rx="8" fill="#ffffff"/>
+  <text font-family="'Courier New', Courier, monospace" font-size="15" fill="#111827" xml:space="preserve">
+    <tspan x="50%" text-anchor="middle" dy="18">                                                 </tspan>
+    <tspan x="50%" text-anchor="middle" dy="18">██████╗ ██████╗ ███████╗ █████╗ ███████╗████████╗</tspan>
+    <tspan x="50%" text-anchor="middle" dy="18">██╔══██╗██╔══██╗██╔════╝██╔══██╗██╔════╝╚══██╔══╝</tspan>
+    <tspan x="50%" text-anchor="middle" dy="18">██║  ██║██████╔╝█████╗  ███████║███████╗   ██║   </tspan>
+    <tspan x="50%" text-anchor="middle" dy="18">██║  ██║██╔══██╗██╔══╝  ██╔══██║╚════██║   ██║   </tspan>
+    <tspan x="50%" text-anchor="middle" dy="18">██████╔╝██████╔╝███████╗██║  ██║███████║   ██║   </tspan>
+    <tspan x="50%" text-anchor="middle" dy="18">╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   </tspan>
+    <tspan x="50%" text-anchor="middle" dy="18">                                                 </tspan>
+  </text>
+</svg>
