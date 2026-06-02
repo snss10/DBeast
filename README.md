@@ -17,7 +17,6 @@
 
 DBeast connects AI assistants such as Claude, Cursor, Windsurf, and VS Code Copilot to PostgreSQL through the **Model Context Protocol**. Instead of exposing one broad `execute_sql` escape hatch, DBeast provides **21 focused tools** for schema discovery, safe query execution, impact analysis, performance review, security checks, maintenance reporting, replication monitoring, and data quality inspection.
 
-The core guarantee: **write operations are never executed**. `INSERT`, `UPDATE`, `DELETE`, `DROP`, and `TRUNCATE` statements are analyzed and reported as impact previews so your assistant can reason about risky changes without touching live data.
 
 ---
 
