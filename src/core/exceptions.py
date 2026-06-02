@@ -42,10 +42,12 @@ class DbeastError(Exception):
         return result
 
 
-class DbConnectionError(DbeastError):
+class DbConnectionError(DbeastError, ConnectionError):
     """Raised when database connection fails.
 
     Named DbConnectionError to avoid shadowing Python's built-in ConnectionError.
+    Also subclasses ConnectionError so callers can catch the standard Python
+    connection exception type when they do not need DBeast-specific details.
     """
 
     code = "CONNECTION_ERROR"

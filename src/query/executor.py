@@ -64,7 +64,7 @@ class QueryExecutor:
         """
         if self.is_write_query(query):
             raise ValueError(
-                "Write queries (INSERT, UPDATE, DELETE, etc.) are not allowed. "
+                "write queries (INSERT, UPDATE, DELETE, etc.) are not allowed. "
                 "Use analyze_impact to preview affected rows."
             )
 
