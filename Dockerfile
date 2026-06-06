@@ -2,7 +2,7 @@
 # Optimized for production deployment
 
 # Stage 1: Build stage
-FROM python:3.14-slim as builder
+FROM python:3.14-slim AS builder
 
 WORKDIR /app
 
@@ -22,7 +22,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Stage 2: Production stage
-FROM python:3.14-slim as production
+FROM python:3.14-slim AS production
 
 LABEL io.modelcontextprotocol.server.name="io.github.snss10/dbeast"
 
