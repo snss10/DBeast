@@ -3,7 +3,7 @@
   "name": "io.github.snss10/dbeast",
   "title": "DBeast PostgreSQL MCP",
   "description": "PostgreSQL MCP server for schema, query, health, security, and performance analysis.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "repository": {
     "url": "https://github.com/snss10/DBeast",
     "source": "github"
@@ -11,7 +11,7 @@
   "packages": [
     {
       "registryType": "oci",
-      "identifier": "ghcr.io/snss10/dbeast:0.2.0",
+      "identifier": "ghcr.io/snss10/dbeast:0.2.1",
       "transport": {
         "type": "stdio"
       },
