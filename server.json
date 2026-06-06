@@ -1,0 +1,78 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.snss10/dbeast",
+  "title": "DBeast",
+  "description": "Expert PostgreSQL database analysis MCP server for schema discovery, safe query execution, health checks, maintenance analysis, performance review, security audits, data quality reports, and write-impact previews.",
+  "version": "0.1.0",
+  "repository": {
+    "url": "https://github.com/snss10/DBeast",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "oci",
+      "identifier": "ghcr.io/snss10/dbeast:0.1.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "DATABASE_URL",
+          "description": "PostgreSQL connection URL, for example postgresql://user:password@host:5432/database.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": true
+        },
+        {
+          "name": "DB_HOST",
+          "description": "PostgreSQL host when DATABASE_URL is not used.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "DB_PORT",
+          "description": "PostgreSQL port when DATABASE_URL is not used.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "DB_USER",
+          "description": "PostgreSQL user when DATABASE_URL is not used.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "DB_PASSWORD",
+          "description": "PostgreSQL password when DATABASE_URL is not used.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": true
+        },
+        {
+          "name": "DB_NAME",
+          "description": "PostgreSQL database name when DATABASE_URL is not used.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "AWS_SECRET_NAME",
+          "description": "AWS Secrets Manager secret containing PostgreSQL credentials.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "AWS_REGION",
+          "description": "AWS region for Secrets Manager lookup.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}

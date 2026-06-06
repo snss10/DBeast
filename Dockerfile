@@ -24,6 +24,8 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Stage 2: Production stage
 FROM python:3.14-slim as production
 
+LABEL io.modelcontextprotocol.server.name="io.github.snss10/dbeast"
+
 WORKDIR /app
 
 # Install runtime dependencies only
