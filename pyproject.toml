@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "dbeast"
-version = "0.1.1"
+version = "0.2.0"
 description = "Expert-level PostgreSQL database analysis MCP. Schema discovery, query execution, health/maintenance/replication/security audits, data quality, partition analysis, and write-impact previews."
 readme = "README.md"
 requires-python = ">=3.11"
