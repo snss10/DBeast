@@ -1,9 +1,9 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.snss10/dbeast",
-  "title": "DBeast",
-  "description": "Expert PostgreSQL database analysis MCP server for schema discovery, safe query execution, health checks, maintenance analysis, performance review, security audits, data quality reports, and write-impact previews.",
-  "version": "0.1.0",
+  "title": "DBeast PostgreSQL MCP",
+  "description": "PostgreSQL MCP server for AI-assisted DBA workflows: schema discovery, read-only query execution, write-impact previews, health, maintenance, performance, security, replication, and data quality analysis.",
+  "version": "0.1.1",
   "repository": {
     "url": "https://github.com/snss10/DBeast",
     "source": "github"
@@ -11,7 +11,7 @@
   "packages": [
     {
       "registryType": "oci",
-      "identifier": "ghcr.io/snss10/dbeast:0.1.0",
+      "identifier": "ghcr.io/snss10/dbeast:0.1.1",
       "transport": {
         "type": "stdio"
       },
