@@ -9,6 +9,29 @@ Usage:
     mcp dev src/server.py     # Development mode with inspector
 """
 
+
+def _use_project_venv() -> None:
+    """Re-exec with the uv-created virtualenv when launched by plain python."""
+    import os
+    import sys
+    from pathlib import Path
+
+    project_root = Path(__file__).resolve().parents[1]
+    venv_python = project_root / ".venv" / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
+
+    if not venv_python.exists():
+        return
+
+    current_python = Path(sys.executable).resolve()
+    target_python = venv_python.resolve()
+    if current_python == target_python:
+        return
+
+    os.execv(str(target_python), [str(target_python), *sys.argv])
+
+
+_use_project_venv()
+
 from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
 
